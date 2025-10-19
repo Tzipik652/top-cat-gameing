@@ -5,7 +5,6 @@ import {
   CardContent,
   Typography,
   Avatar,
-  LinearProgress,
   Chip,
   Stack,
   IconButton,
@@ -16,7 +15,7 @@ import { EmojiEvents, Diamond, Close } from "@mui/icons-material";
 import usersService, { User } from "../services/usersService";
 
 const TopCatsLeaderboard: React.FC = () => {
-   const [top, setTop] = useState<User[]>([]);
+  const [top, setTop] = useState<User[]>([]);
   const [lowest, setLowest] = useState<User[]>([]);
 
   useEffect(() => {
@@ -34,26 +33,18 @@ const TopCatsLeaderboard: React.FC = () => {
   const getMedalIcon = (position: number) => {
     const colors = ["#FFD700", "#C0C0C0", "#CD7F32"];
     return position <= 3 ? (
-      <EmojiEvents sx={{ color: colors[position - 1], fontSize: 32 }} />
+      <Box display="flex" flexDirection="column" alignItems="center">
+        <Typography variant="h6" fontWeight="bold" color="white">
+          {position}
+        </Typography>{" "}
+        <EmojiEvents sx={{ color: colors[position - 1], fontSize: 32 }} />
+      </Box>
     ) : (
       <Typography variant="h6" fontWeight="bold" color="white">
         {position}
       </Typography>
     );
   };
-
-  //   if (!users) {
-  //     return (
-  //       <Box
-  //         display="flex"
-  //         justifyContent="center"
-  //         alignItems="center"
-  //         minHeight="100vh"
-  //       >
-  //         <LinearProgress sx={{ width: "50%" }} />
-  //       </Box>
-  //     );
-  //   }
 
   return (
     <Container maxWidth="sm">
@@ -139,19 +130,26 @@ const TopCatsLeaderboard: React.FC = () => {
                     flex: 1,
                   }}
                 >
-                <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", mb: 1 }}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      mb: 1,
+                    }}
+                  >
                     <Avatar
-                        sx={{
-                            bgcolor: "#8B5CF6",
-                            width: 40,
-                            height: 40,
-                            border: "2px solid #A78BFA",
-                            fontSize: "1.2rem",
-                        }}
-                    >
-                        {user.image_url}
-                    </Avatar>
-                </Box>
+                      sx={{
+                        bgcolor: "#8B5CF6",
+                        width: 40,
+                        height: 40,
+                        border: "2px solid #A78BFA",
+                        fontSize: "1.2rem",
+                      }}
+                      src={user.image_url}
+                      alt={user.name}
+                    />
+                  </Box>
                   <Typography
                     variant="caption"
                     color="white"
@@ -209,9 +207,9 @@ const TopCatsLeaderboard: React.FC = () => {
             </Box>
 
             <Stack spacing={1}>
-              {top.map((player) => (
+              {top.map((user) => (
                 <Paper
-                  key={player.id}
+                  key={user.id}
                   elevation={1}
                   sx={{
                     display: "grid",
@@ -229,7 +227,7 @@ const TopCatsLeaderboard: React.FC = () => {
                   }}
                 >
                   <Box sx={{ display: "flex", justifyContent: "center" }}>
-                    {getMedalIcon(player.id)}
+                    {getMedalIcon(user.position)}
                   </Box>
                   <Stack direction="row" spacing={1} alignItems="center">
                     <Avatar
@@ -240,15 +238,15 @@ const TopCatsLeaderboard: React.FC = () => {
                         border: "2px solid #A78BFA",
                         fontSize: "1.2rem",
                       }}
-                    >
-                      {player.image_url}
-                    </Avatar>
+                      src={user.image_url}
+                      alt={user.name}
+                    />
                     <Typography
                       variant="body2"
                       color="white"
                       fontWeight="medium"
                     >
-                      {player.name}
+                      {user.name}
                     </Typography>
                   </Stack>
                   <Stack
@@ -259,7 +257,7 @@ const TopCatsLeaderboard: React.FC = () => {
                   >
                     <Diamond sx={{ color: "#00E5FF", fontSize: 20 }} />
                     <Typography variant="h6" color="#00E5FF" fontWeight="bold">
-                      {player.score}
+                      {user.score}
                     </Typography>
                   </Stack>
                 </Paper>
