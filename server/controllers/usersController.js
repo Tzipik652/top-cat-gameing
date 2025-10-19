@@ -28,9 +28,15 @@ exports.getTopUsers = async (req, res) => {
   try {
     const top = parseInt(req.query.top) || 10;
     const [rows] = await db.query(
-      `SELECT * FROM users
-       ORDER BY score DESC
-       LIMIT ?`,
+      `SELECT 
+          id,
+          name,
+          image_url,
+          score,
+          DENSE_RANK() OVER (ORDER BY score DESC) AS position
+      FROM users
+      LIMIT ?
+      `,
       [top]
     );
     res.json(rows);
@@ -44,9 +50,14 @@ exports.getLowestUsers = async (req, res) => {
     const limit = parseInt(req.query.limit) || 2;
 
     const [rows] = await db.query(
-      `SELECT * FROM users
-       ORDER BY score ASC
-       LIMIT ?`,
+      `SELECT 
+          id,
+          name,
+          image_url,
+          score,
+          DENSE_RANK() OVER (ORDER BY score ASC) AS position
+        FROM users
+        LIMIT ?`,
       [limit]
     );
     res.json(rows);

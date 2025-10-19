@@ -5,6 +5,7 @@ export interface User {
   name: string;
   image_url: string;
   score: number;
+  position:  number;
 }
 
 export interface UserRankResponse {
@@ -47,6 +48,7 @@ class UsersService {
 
   async getTopUsers(top: number = 10): Promise<User[]> {
     const { data } = await this.api.get('/users/leaderboard', { params: { top } });
+    console.log("data: ",data)
     return data;
   }
 
