@@ -37,11 +37,52 @@ async function seed() {
     await pool.query(`TRUNCATE TABLE users`);
 
     const users = [
-      ["Alice", "https://example.com/alice.png", 100],
-      ["Bob", "https://example.com/bob.png", 50],
-      ["Charlie", "https://example.com/charlie.png", 75],
-      ["David", "https://example.com/david.png", 25],
-      ["Eve", "https://example.com/eve.png", 0],
+      [
+        "Alice",
+        "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e",
+        100,
+      ],
+      [
+        "Grace",
+        "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d",
+        40,
+      ],
+      [
+        "Hannah",
+        "https://images.unsplash.com/photo-1524504388940-b1c1722653e1",
+        30,
+      ],
+      [
+        "David",
+        "https://images.unsplash.com/photo-1527980965255-d3b416303d12",
+        65,
+      ],
+      [
+        "Bob",
+        "https://images.unsplash.com/photo-1502767089025-6572583495b0",
+        85,
+      ],
+      [
+        "Eve",
+        "https://images.unsplash.com/photo-1531123897727-8f129e1688ce",
+        55,
+      ],
+      ["Jack", "https://images.unsplash.com/photo-1544723795-3fb6469f5b39", 10],
+      [
+        "Frank",
+        "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e",
+        45,
+      ],
+      [
+        "Isaac",
+        "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91",
+        20,
+      ],
+      [
+        "Charlie",
+        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e",
+        75,
+      ],
     ];
 
     for (const user of users) {
@@ -51,13 +92,12 @@ async function seed() {
       );
     }
 
-    // בדיקה אם אינדקס כבר קיים
     const [indexRows] = await pool.query(
       `
-  SELECT COUNT(1) AS idxExists
-  FROM INFORMATION_SCHEMA.STATISTICS
-  WHERE table_schema = ? AND table_name = 'users' AND index_name = 'idx_score'
-`,
+      SELECT COUNT(1) AS idxExists
+      FROM INFORMATION_SCHEMA.STATISTICS
+      WHERE table_schema = ? AND table_name = 'users' AND index_name = 'idx_score'
+    `,
       [process.env.DB_NAME]
     );
 
