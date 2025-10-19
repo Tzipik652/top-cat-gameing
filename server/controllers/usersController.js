@@ -43,7 +43,7 @@ exports.getLowestUsers = async (req, res) => {
   try {
     const limit = parseInt(req.query.limit) || 2;
 
-    const [rows] = await pool.query(
+    const [rows] = await db.query(
       `SELECT * FROM users
        ORDER BY score ASC
        LIMIT ?`,
