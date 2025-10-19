@@ -65,7 +65,6 @@ exports.getLowestUsers = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
 exports.getUserRank = async (req, res) => {
   const userId = req.params.id;
   try {
@@ -75,8 +74,8 @@ exports.getUserRank = async (req, res) => {
     );
     if (!user) return res.status(404).json({ error: "User not found" });
 
-    const [[{ rank }]] = await db.query(
-      "SELECT COUNT(*) + 1 AS rank FROM users WHERE score > ?",
+    const [[{ position }]] = await db.query(
+      "SELECT COUNT(*) + 1 AS position FROM users WHERE score > ?",
       [user.score]
     );
 
@@ -84,7 +83,7 @@ exports.getUserRank = async (req, res) => {
       "SELECT id, name, image_url, score FROM users WHERE score > ? ORDER BY score ASC LIMIT 5",
       [user.score]
     );
-    const aboveReversed = above.reverse();
+    const aboveReversed = above.reverse(); 
 
     const [below] = await db.query(
       "SELECT id, name, image_url, score FROM users WHERE score < ? ORDER BY score DESC LIMIT 5",
@@ -93,8 +92,10 @@ exports.getUserRank = async (req, res) => {
 
     const neighbors = [...aboveReversed, user, ...below];
 
-    res.json({ rank, user, neighbors });
+    res.json({ position, user, neighbors });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: err.message });
   }
 };
+
